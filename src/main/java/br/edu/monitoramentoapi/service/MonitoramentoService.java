@@ -1,5 +1,6 @@
 package br.edu.monitoramentoapi.service;
 
+import br.edu.monitoramentoapi.DTO.HealthCheckDTO;
 import br.edu.monitoramentoapi.config.ApiValidateConfig;
 import br.edu.monitoramentoapi.config.BotConfig;
 import br.edu.monitoramentoapi.retrofitUtils.CalculadoraRetrofitFactory;
@@ -36,12 +37,12 @@ public class MonitoramentoService {
 
         log.info("Iniciando novo request de monitoramento da API [{}]", apiConfig.getUrlApi());
 
-        Response<String> response = null;
+        Response<HealthCheckDTO> response = null;
         try {
 
             CalcularService calcularService = CalculadoraRetrofitFactory.FROM_URL(apiConfig.getUrlApi());
 
-            Call<String> call = calcularService.somaSimples(1, 2);
+            Call<HealthCheckDTO> call = calcularService.healthcheck();
 
             response = call.execute();
 
@@ -50,10 +51,10 @@ public class MonitoramentoService {
                 if (!funcionouCorretamente) {
                     mandaMensagem(MENSAGEM_DE_NORMALIZACAO);
                     log.info("API voltou a responder!");
-                } else {
+                } /*else {
                     mandaMensagem(MENSAGEM_DE_SUCESSO);
                     log.info("API Respondendo normalmente!");
-                }
+                }*/
 
             } else {
                 mandaMensagem(MENSAGEM_DE_ERRO);
